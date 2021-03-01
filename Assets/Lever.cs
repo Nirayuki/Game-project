@@ -22,6 +22,7 @@ public class Lever : MonoBehaviour
             connectedObject.SendMessage("activate");
             spRenderer.sprite = leverStates[1];
             activated=true;
+            print();//ss
         }else{
             connectedObject.SendMessage("deactivate");
             spRenderer.sprite = leverStates[0];
