@@ -10,7 +10,7 @@ public class Arrow : MonoBehaviour
  
     
     [SerializeField]
-    private string dmgType;
+    private int dmgType;
 
 
     void OnTriggerEnter2D(Collider2D other){

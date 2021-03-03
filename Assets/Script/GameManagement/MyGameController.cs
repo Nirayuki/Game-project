@@ -44,7 +44,7 @@ public class MyGameController : MonoBehaviour
         "Darkness" //Levemente preto, deixa visao escura(criar um canvas preto de gama baixo)
     }*/
 
-    public float translateMultiplier(string dmgType, string enemyType){
+ /*   public float translateMultiplier(string dmgType, string enemyType){
         switch(dmgType){
             case "Normal":
                 return collectMultiplier(0,enemyType);
@@ -59,7 +59,7 @@ public class MyGameController : MonoBehaviour
             case "Darkness":
                 return collectMultiplier(5,enemyType);
         }
-    }
+    }*/
 
      public void sumPoints(int quantity){
         points+=quantity;

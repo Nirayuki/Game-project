@@ -14,13 +14,13 @@ public class Weapon : MonoBehaviour//bow may implement weapopn
     }
 
     void GetDmgType(){
-        mgController.translateType(damageType);
+        //mgController.translateType(damageType);
     }
 
     void OnTriggerEnter2D(Collider2D other){
         if(other.gameObject.tag=="enemy"){
-            Enemy enemy = other.GetComponent<Enemy>();
-            inflict(weapon.GetDmgType()*mgController.tranlateMultiplier(dmgType,enemy.getEnemyType()));
+            //Enemy enemy = other.GetComponent<Enemy>();
+            //inflict(weapon.GetDmgType()*mgController.tranlateMultiplier(dmgType,enemy.getEnemyType()));
         }
     }
 }
