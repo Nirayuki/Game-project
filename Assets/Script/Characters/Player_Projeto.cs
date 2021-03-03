@@ -69,7 +69,7 @@ public class Player_Projeto : MonoBehaviour
 
     private float horizontal,vertical;
 
-    // Start is called before the first frame update
+    
     void Start()
     {
         jump = GetComponent<AudioSource>();
@@ -87,8 +87,7 @@ public class Player_Projeto : MonoBehaviour
 
     void FixedUpdate(){ //taxa de atualizacao fixa 0.02, comandos relacionados a fisica
         grounded = Physics2D.OverlapCircle(groundCheck.position,0.002f,whatIsGround); // Usado para validar com um true ou false se detecta uma colisao com o chao
-                                                                                      //detalhe das variaveis: groundCheck e nosso outro gameObject que esta logo abaixo do player
-                                                                                      //Ele
+                                                                                      
         
         rig.velocity = new Vector2(horizontal*speed,rig.velocity.y);
 
@@ -101,7 +100,7 @@ public class Player_Projeto : MonoBehaviour
 
         detectarObjeto();
     }
-    // Update is called once per frame
+    
     void Update()// Executado em cada frame apos o Start
     {
         //A cada x intervalos, se actualCharges < charges ele vai dar um yield return wait for seconds 
@@ -163,32 +162,8 @@ public class Player_Projeto : MonoBehaviour
         transform.localScale = new Vector3(x,transform.localScale.y,transform.localScale.z);
 
         dir.x=x;
-        //dir = dir;
-    }
-
-    
-    //Utilizado para informar o parametro de animacao se estamos atacando ou nao
-  /*  public void attack(int atk){
-        switch(atk){
-            case 0:
-                attacking=false;
-                animAtaque[2].SetActive(false);
-                break;
-            case 1:
-                attacking=true;
-                break;
-        }
         
     }
-
-    public void setAnimWeapon(int id){
-        foreach(GameObject o in animAtaque){
-            o.SetActive(false);
-        }
-
-        animAtaque[id].SetActive(true);
-    }
-*/
     
 
     public void detectarObjeto(){
