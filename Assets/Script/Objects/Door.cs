@@ -35,6 +35,9 @@ public class Door : MonoBehaviour
     private IEnumerator coroutine = null;
 
 
+    private bool opened;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,15 +50,17 @@ public class Door : MonoBehaviour
 
     // Update is called once per frame
     public void use(){//use opened varw
-    SManager.play("doorOpening");
-        anim.SetBool("open",true);
-                
-        endTransparency = Instantiate(endScreen,endPst.position,endPst.rotation);
-        
-        //while not 1 then continue
-        coroutine = fade(fadeFreq);
-        StartCoroutine(coroutine);
-
+        if(!opened){
+            SManager.play("doorOpening");
+            anim.SetBool("open",true);
+                    
+            endTransparency = Instantiate(endScreen,endPst.position,endPst.rotation);
+            
+            //while not 1 then continue
+            coroutine = fade(fadeFreq);
+            StartCoroutine(coroutine);
+            opened=true;
+        }
     }
 
 

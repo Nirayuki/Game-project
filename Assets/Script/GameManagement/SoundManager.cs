@@ -26,6 +26,11 @@ public class SoundManager : MonoBehaviour {
         audioSource = new AudioSource();
         audioSource = GetComponent<AudioSource>();
         play("BMusic");
+        
+    }
+
+    public void changeVolume(float volume){
+        audioSource.volume=volume;
     }
 
     public void play(string description){
