@@ -103,49 +103,51 @@ public class Player_Projeto : MonoBehaviour
     
     void Update()// Executado em cada frame apos o Start
     {
-        //A cada x intervalos, se actualCharges < charges ele vai dar um yield return wait for seconds 
-       // e assim carregar a cada x trechos, mas vai ter outra var bool de reloading pra n rodar mais que um de
-       //uma vez logo if(!reloading) reload() yield e por ai vai sequencial
-       StartCoroutine("rechargeShots");
-       
-
-        horizontal = Input.GetAxisRaw("Horizontal"); //Coleta as direcoes horizontal e vertical no momento
-        vertical = Input.GetAxisRaw("Vertical");    
-
+            //A cada x intervalos, se actualCharges < charges ele vai dar um yield return wait for seconds 
+        // e assim carregar a cada x trechos, mas vai ter outra var bool de reloading pra n rodar mais que um de
+        //uma vez logo if(!reloading) reload() yield e por ai vai sequencial
+            if(mgController.inPause()==false){
+                StartCoroutine("rechargeShots");
         
 
+                horizontal = Input.GetAxisRaw("Horizontal"); //Coleta as direcoes horizontal e vertical no momento
+                vertical = Input.GetAxisRaw("Vertical");    
 
-        if(vertical<0){//Ja esse, tendo em vista que vertical seria para cima, seria o responsavel por saber se solicitamos uma subida ou nao
-            idAnimation=2; //Pois de acordo com os controles se apertamos ^ o vertical >1
-            if(grounded){ //logo , para baixo seria vertical<1
-                horizontal=0;
+                
+
+
+                if(vertical<0){//Ja esse, tendo em vista que vertical seria para cima, seria o responsavel por saber se solicitamos uma subida ou nao
+                    idAnimation=2; //Pois de acordo com os controles se apertamos ^ o vertical >1
+                    if(grounded){ //logo , para baixo seria vertical<1
+                        horizontal=0;
+                    }
+                    
+                }
+                else if(horizontal!=0 ){//Aqui, de acordo com nossas regras definimos a animcao utilizada, mudando a idanimation que, no animator funciona para trocas de animacao
+                    idAnimation=1;
+                    
+                }else{
+                    idAnimation=0;
+                }
+
+        
+                //Comandos
+                if(Input.GetButtonDown("Jump" ) && grounded){
+                    rig.AddForce(new Vector2(0,jumpForce));//O primeiro seria o impulso para o x entao poderiamos criar um knock back ou front
+                    sManager.play("PJump");
+                    
+                }
+
+                if(Input.GetButtonDown("Fire1") && detectedObject!=null){ // when not in combat too
+                    detectedObject.SendMessage("use");
+                } else if(Input.GetButtonDown("Fire1") && detectedObject==null ){
+                    StartCoroutine("shot");
+                }
+
+                if(attacking && grounded){
+                    horizontal=0;
+                }
             }
-            
-        }
-        else if(horizontal!=0 ){//Aqui, de acordo com nossas regras definimos a animcao utilizada, mudando a idanimation que, no animator funciona para trocas de animacao
-            idAnimation=1;
-            
-        }else{
-            idAnimation=0;
-        }
-
- 
-        //Comandos
-        if(Input.GetButtonDown("Jump" ) && grounded){
-            rig.AddForce(new Vector2(0,jumpForce));//O primeiro seria o impulso para o x entao poderiamos criar um knock back ou front
-            sManager.play("PJump");
-            jump.Play();
-        }
-
-        if(Input.GetButtonDown("Fire1") && detectedObject!=null){ // when not in combat too
-            detectedObject.SendMessage("use");
-        } else if(Input.GetButtonDown("Fire1") && detectedObject==null ){
-            StartCoroutine("shot");
-        }
-
-        if(attacking && grounded){
-            horizontal=0;
-        }
       
 
 

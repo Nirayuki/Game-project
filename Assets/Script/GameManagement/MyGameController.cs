@@ -23,9 +23,13 @@ public class MyGameController : MonoBehaviour
     public float[] acidWeaknesses;
     public float[] darknessWeaknesses;
 
-    [SerializeField]
-    private GameObject pauseInterface = null;
+    
+    [SerializeField]private GameObject pauseInterface = null;
+    [SerializeField]private GameObject optionsInterface = null;
     private bool onPause=false;
+
+
+
 
     void Start(){
         player = FindObjectOfType(typeof(playerScript)) as playerScript;
@@ -88,22 +92,35 @@ public class MyGameController : MonoBehaviour
 
     }
 
+    
+
     public void PauseGame()
     {
-        Time.timeScale = 0;
-        pauseInterface.SetActive(true);
-        
+            Time.timeScale = 0;
+            pauseInterface.SetActive(true);
+            onPause=true;
     }
 
     public void ResumeGame()
     {
-        Time.timeScale = 1;
-        pauseInterface.SetActive(false);
-        
+            Time.timeScale = 1;
+            pauseInterface.SetActive(false);
+            onPause=false;
     }
 
+    public void enterOptions(){
+            pauseInterface.SetActive(false);
+            optionsInterface.SetActive(true);
+    }
+    
+    public void exitOptions(){
+            pauseInterface.SetActive(true);
+            optionsInterface.SetActive(false);
+    }
+
+
     void checkKeyInput(){
-       if(Input.GetButtonDown("Cancel")){
+       if(Input.GetButtonDown("Cancel") && onPause==false){
            if(Time.timeScale == 1){
                PauseGame();
                
@@ -113,4 +130,6 @@ public class MyGameController : MonoBehaviour
            print(Time.timeScale);
        }
     }
+
+    public bool inPause(){return onPause;}
 }
