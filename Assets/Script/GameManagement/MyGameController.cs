@@ -11,8 +11,9 @@ public class MyGameController : MonoBehaviour
     public  string[] damageTypes;
 
     [Header("Player")]
-    public playerScript player;
-    public GameObject[] lifes;
+    public Player_Projeto player;
+    public Transform lifeBar;
+    public Text healthText;
     public GameObject[] shots;
 
     [Header("Fraquezas x Tipo")]
@@ -32,7 +33,7 @@ public class MyGameController : MonoBehaviour
 
 
     void Start(){
-        player = FindObjectOfType(typeof(playerScript)) as playerScript;
+        player = FindObjectOfType(typeof(Player_Projeto)) as Player_Projeto;
     }
 
     void Update(){
@@ -78,19 +79,7 @@ public class MyGameController : MonoBehaviour
 
     }
 
-    public void updatePlayerUI(string UItem,int value){
-        switch(UItem){
-            case "health":
-                for(int i=0;i<3;i++){
-                    lifes[i].GetComponent<SpriteRenderer>().enabled=false;
-                }
-                for(int i=0;i<value;i++){
-                    lifes[i].GetComponent<SpriteRenderer>().enabled=true;
-                }
-                break;
-        }
 
-    }
 
     
 
@@ -132,4 +121,12 @@ public class MyGameController : MonoBehaviour
     }
 
     public bool inPause(){return onPause;}
+
+    public void updateHealthUI(){
+        //atualiza a barra de vida atual
+        lifeBar.localScale = new Vector3(player.getHealthPercent(), transform.localScale.y, transform.localScale.z);
+        
+        //atualiza o texto da quantidade de vida
+        healthText.text = player.getHealthRelation();
+    }
 }
