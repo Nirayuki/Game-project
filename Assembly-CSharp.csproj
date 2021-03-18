@@ -47,7 +47,6 @@
      <Compile Include="Assets\Script\Characters\Player_Projeto.cs" />
      <Compile Include="Assets\Script\Menu\Menu.cs" />
      <Compile Include="Assets\Script\Characters\Slime_Move.cs" />
-     <Compile Include="Assets\Script\Characters\Curso_personagem.cs" />
      <Compile Include="Assets\Script\Characters\bee_move.cs" />
      <Compile Include="Assets\Script\Menu\Parallax.cs" />
      <Compile Include="Assets\Script\Characters\info_NPC.cs" />

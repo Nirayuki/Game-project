@@ -26,7 +26,8 @@ public class Player_Projeto : MonoBehaviour
     public Transform arrowPoint;
 
     [Header("Vida e info personagem")]
-    public int health=2;
+    public float health=100;
+    public float actualHealth=100;
     public Transform groundCheck;
     public float speed; // Variavel que armazena a velocidade do movimento
     public float jumpForce; //armazena a forca aplicada no pulo do personagem
@@ -269,15 +270,25 @@ public class Player_Projeto : MonoBehaviour
     void takeDamage(){
         if (health>0){
                 rig.AddForce(new Vector2(0,150f));
-                health--; // usar de um metodo pra tudo isso de reduzir vida
-                mgController.updatePlayerUI("health",health);
                 Debug.Log("Ouch");
+                actualHealth-=10;
+                mgController.updateHealthUI();
                 if (health == 0)//checkHealth() method?
                 {
                     mgController.changeScene("Menu");
                 }
 
             }
+    }
+
+    public float getHealthPercent(){
+
+        return actualHealth/health;
+        
+    }
+
+    public string getHealthRelation(){
+        return actualHealth+"/"+health;
     }
 
 }
