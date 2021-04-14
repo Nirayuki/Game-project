@@ -20,6 +20,8 @@ public class SoundManager : MonoBehaviour {
     //Interacoes
     public AudioClip doorOpening;
 
+    public AudioClip[] clips;
+
 
     void Start(){
 
@@ -29,7 +31,7 @@ public class SoundManager : MonoBehaviour {
         
     }
 
-    public void changeVolume(float volume){
+    public void changeVolume(float volume){//usar um audiosource pra cada coisa ou mais, uma pra personagem um pra musica por ai vai
         audioSource.volume=volume;
     }
 
