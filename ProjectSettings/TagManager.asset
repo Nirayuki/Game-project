@@ -10,16 +10,17 @@ TagManager:
   - Weapon
   - arrow
   - interactive
+  - ScenarioObject
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - ScenarioObject
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Player
+  - ground
+  - enemy
   - 
   - 
   - 
