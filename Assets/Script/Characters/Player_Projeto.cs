@@ -18,8 +18,13 @@ public class Player_Projeto : MonoBehaviour
 
     //Gerenciamento de Animacoes   - Movimento
     public bool grounded; //Pisa ou n pisa
+
+    public bool stunned;
+
     public int idAnimation; //indica id de animacao a ser executada
     public bool attacking; // indica se esta executando um ataque
+
+    public bool attackingMelee;
 
     //Gerenciamento de animacoes - Ataque/arma
     public GameObject[] animAtaque;
@@ -87,10 +92,14 @@ public class Player_Projeto : MonoBehaviour
 
 
     void FixedUpdate(){ //taxa de atualizacao fixa 0.02, comandos relacionados a fisica
-        grounded = Physics2D.OverlapCircle(groundCheck.position,0.002f,whatIsGround); // Usado para validar com um true ou false se detecta uma colisao com o chao
-                                                                                      
-        
-        rig.velocity = new Vector2(horizontal*speed,rig.velocity.y);
+        grounded = Physics2D.OverlapCircle(groundCheck.position,0.1448299f,whatIsGround); // Usado para validar com um true ou false se detecta uma colisao com o chao
+                                                                                
+        if(!stunned){
+            rig.velocity = new Vector2(horizontal*speed,rig.velocity.y);
+        }
+        else{
+            rig.velocity = new Vector2(0f,0f);
+        }
 
         if(horizontal>0 && lookLeft == true && !attacking){ // Dadas as variaveis anteriores ela valida para qual lado estamos olhando, por exemplo a horizntal
             flip(); 
@@ -188,6 +197,13 @@ public class Player_Projeto : MonoBehaviour
             shooting=true;
             actualCharges--;
             GameObject shot =    Instantiate(mgController.shots[dmgType],arrowPoint.position,arrowPoint.rotation);
+            
+            if(lookLeft){
+                shot.GetComponent<SpriteRenderer>().flipX=true;
+            }else{
+                shot.GetComponent<SpriteRenderer>().flipX=false;
+            }
+
 
             shot.GetComponent<Rigidbody2D>().AddForce(new Vector2(shot.GetComponent<Arrow>().getArrowForce()*dir.x,0));// should be a method in Arrow Script
 
@@ -215,15 +231,22 @@ public class Player_Projeto : MonoBehaviour
 
      //da pra usar tags para definir tipo de dano etc
     private void  OnCollisionEnter2D(Collision2D other) {
+        Vector3 objColPos = other.gameObject.GetComponent<Transform>().position;
+
+
         if(other.gameObject.tag=="CanBreak"){
             rig.AddForce(new Vector2(0,jumpForce));
             Destroy(other.gameObject,2);
             Debug.Log("Tum!");
         }else if(other.gameObject.tag=="DamageKnock"){
-            takeDamage();
+            takeDamage(5f);
+            rig.AddForce(new Vector2(0,250));
         }
-        else if(other.gameObject.tag=="Enemy"){
-            rig.AddForce(new Vector2(0,200));
+        else if(other.gameObject.tag=="enemy"){
+            if(!stunned){
+                StartCoroutine(applyKnockBack(0.2f,20f,(transform.position.x-objColPos.x)/(transform.position.x-objColPos.x)));
+                takeDamage(5f);
+            }
         }
         else if (other.gameObject.tag == "Finish")
         {
@@ -236,7 +259,6 @@ public class Player_Projeto : MonoBehaviour
         }
     }
 
-
      void OnTriggerEnter2D(Collider2D other) {//precisa arranjar uma forma de ativar o gameobject dos fire
         //Por exemplo ao trigger com os postes eles comecam a ser mexer pra baixo
         //usando a movimentacao como a do personagem porem sem getaxis
@@ -248,7 +270,7 @@ public class Player_Projeto : MonoBehaviour
             }
         } 
         else if(other.tag=="EnemyWeapon"){
-                takeDamage();
+                takeDamage(10);
                 Destroy(other.gameObject);
         }
     }
@@ -257,25 +279,15 @@ public class Player_Projeto : MonoBehaviour
         
     }
 
-
     //Todo Seria utilizado para reproduzir um som quando chamada tal funcao
-
-
-   
-
-    public void switchType(int tipoNum) {//better with the arrow class
-        dmgType = tipoNum;
-    }
     
-    void takeDamage(){
+    void takeDamage(float damage){
         if (health>0){
-                rig.AddForce(new Vector2(0,150f));
-                Debug.Log("Ouch");
-                actualHealth-=10;
+                actualHealth-=damage;
                 mgController.updateHealthUI();
-                if (health == 0)//checkHealth() method?
+                if (actualHealth == 0)//checkHealth() method?
                 {
-                    mgController.changeScene("Menu");
+                    mgController.gameOver();
                 }
 
             }
@@ -288,7 +300,29 @@ public class Player_Projeto : MonoBehaviour
     }
 
     public string getHealthRelation(){
+
         return actualHealth+"/"+health;
+
+    }
+
+    public IEnumerator applyKnockBack(float knockDur,float knockPwr, float direction){
+        
+        float timer = 0;
+
+        stunned=true;
+        
+        while(timer<knockDur){
+            timer+= Time.deltaTime;
+            rig.AddForce(new Vector2(knockPwr*direction,knockPwr));
+        }
+        //yield return new WaitForSeconds(0.5f);
+        
+        stunned=false;
+        yield return 0;
+
+
+        
+
     }
 
 }

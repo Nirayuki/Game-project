@@ -123,10 +123,25 @@ public class MyGameController : MonoBehaviour
     public bool inPause(){return onPause;}
 
     public void updateHealthUI(){
-        //atualiza a barra de vida atual
-        lifeBar.localScale = new Vector3(player.getHealthPercent(), transform.localScale.y, transform.localScale.z);
+
+        float lifePercent = player.getHealthPercent();
+
+        if(lifePercent>0f){
+            //atualiza a barra de vida atual
+            lifeBar.localScale = new Vector3(lifePercent, transform.localScale.y, transform.localScale.z);
+            
+            //atualiza o texto da quantidade de vida
+            healthText.text = player.getHealthRelation();
+
+
+        } else if(lifePercent==0f){
+            lifeBar.localScale = new Vector3(lifePercent, transform.localScale.y, transform.localScale.z);
+
+            healthText.text = "0/0";
+        }
+    }
+
+    public void gameOver(){
         
-        //atualiza o texto da quantidade de vida
-        healthText.text = player.getHealthRelation();
     }
 }
