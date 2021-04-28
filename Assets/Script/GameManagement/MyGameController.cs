@@ -16,7 +16,16 @@ public class MyGameController : MonoBehaviour
     [Header("Player")]
     public Player_Projeto player;
     public Transform lifeBar;
+
+    public Transform chargesBar;
+
+    public Transform manaBar;
+
     public Text healthText;
+
+    public Text manaText;
+
+    public Text chargeText;
     public GameObject[] shots;
 
     [Header("Fraquezas x Tipo")]
@@ -33,6 +42,8 @@ public class MyGameController : MonoBehaviour
 
     [SerializeField]private GameObject gameOverInterface = null;
 
+    
+
     private bool onPause=false;
 
     
@@ -45,6 +56,8 @@ public class MyGameController : MonoBehaviour
 
     void Update(){
         checkKeyInput();
+
+        updateUI();
     }
 
     /*{
@@ -141,6 +154,25 @@ public class MyGameController : MonoBehaviour
             UICharacter.GetComponent<Animator>().SetTrigger("hit");
 
     }
+
+    void updateUI(){
+       updateManaUI();
+       updateChargesUI(); 
+    }
+
+    void updateManaUI(){//compare mana in the txt and bar scale and changes, if needed compare if it changed or no, recycles
+        manaText.text = player.actualMana + "/" + player.mana;
+
+        manaBar.localScale = new Vector3((player.actualMana/player.mana), transform.localScale.y, transform.localScale.z);
+    }
+
+    void updateChargesUI(){//compare charges in the txt and bar scale nd changes, if needed
+        chargeText.text = player.actualCharges + "/" + player.charges;
+
+        chargesBar.localScale = new Vector3((player.actualCharges/player.charges), transform.localScale.y, transform.localScale.z);
+    }
+
+
 
 
     void checkKeyInput(){
