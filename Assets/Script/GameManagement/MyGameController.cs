@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class MyGameController : MonoBehaviour
 {//fazer metodo de selection, o button vai trazer atravez da creator um valor e uma acao do switch
+
+    [SerializeField] private GameObject UICharacter;
+
     [Header("Game general")]
     public  int points;
     public  string[] damageTypes;
@@ -27,13 +30,17 @@ public class MyGameController : MonoBehaviour
     
     [SerializeField]private GameObject pauseInterface = null;
     [SerializeField]private GameObject optionsInterface = null;
+
+    [SerializeField]private GameObject gameOverInterface = null;
+
     private bool onPause=false;
 
-
+    
 
 
     void Start(){
         player = FindObjectOfType(typeof(Player_Projeto)) as Player_Projeto;
+        initiateUI();
     }
 
     void Update(){
@@ -73,28 +80,35 @@ public class MyGameController : MonoBehaviour
 
     public void changeScene(string scene){
         SceneManager.LoadScene(scene);
-        if(Time.timeScale == 0){
-               ResumeGame();
-        }
+        changeTimeScale(0);
+    }
 
+    void initiateUI(){
+        gameOverInterface.SetActive(false);
+        onPause=false;
+
+        changeTimeScale(1); 
     }
 
 
 
-    
+    public void gameOver(){
+        gameOverInterface.SetActive(true);
+        onPause=true;
+
+        changeTimeScale(0); 
+    }
 
     public void PauseGame()
     {
-            Time.timeScale = 0;
-            pauseInterface.SetActive(true);
-            onPause=true;
+            changeTimeScale(0);
+            setPause(true);
     }
 
     public void ResumeGame()
     {
-            Time.timeScale = 1;
-            pauseInterface.SetActive(false);
-            onPause=false;
+            changeTimeScale(1);
+            setPause(false);
     }
 
     public void enterOptions(){
@@ -107,6 +121,27 @@ public class MyGameController : MonoBehaviour
             optionsInterface.SetActive(false);
     }
 
+    void setPause(bool value){
+        pauseInterface.SetActive(value);
+        onPause=value;
+    }
+
+    void changeTimeScale(int value){
+        if(Time.timeScale  != 0 && value == 0){
+            Time.timeScale = value;
+        }else if(Time.timeScale != 1 && value == 1){
+            Time.timeScale = value;
+        }
+    }
+
+
+
+    public void hitTriggerUI(){
+
+            UICharacter.GetComponent<Animator>().SetTrigger("hit");
+
+    }
+
 
     void checkKeyInput(){
        if(Input.GetButtonDown("Cancel") && onPause==false){
@@ -116,7 +151,6 @@ public class MyGameController : MonoBehaviour
            }else if(Time.timeScale == 0){
                ResumeGame();
            }
-           print(Time.timeScale);
        }
     }
 
@@ -141,7 +175,5 @@ public class MyGameController : MonoBehaviour
         }
     }
 
-    public void gameOver(){
-        
-    }
+    
 }
