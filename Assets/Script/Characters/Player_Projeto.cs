@@ -11,6 +11,8 @@ public class Player_Projeto : MonoBehaviour
     public int dmgType=0;
 
     private Animator anim;
+
+
     private Rigidbody2D rig; // Armazena a Rig responsavel por aplicar a fisica de peso e etc
     public LayerMask whatIsGround; //indica o que e superficie/chao/objetos colidiveis para o Groundcheck(para verificar se esta no chao)
     
@@ -21,7 +23,7 @@ public class Player_Projeto : MonoBehaviour
 
     public bool stunned;
 
-    public int idAnimation; //indica id de animacao a ser executada
+    [SerializeField] public int idAnimation; //indica id de animacao a ser executada
     public bool attacking; // indica se esta executando um ataque
 
     public bool attackingMelee;
@@ -65,6 +67,9 @@ public class Player_Projeto : MonoBehaviour
     private int actualCharges;
 
     private bool reloading=false;
+
+    private bool tired=false;
+
     private bool shooting= false;
     
 
@@ -116,6 +121,9 @@ public class Player_Projeto : MonoBehaviour
             //A cada x intervalos, se actualCharges < charges ele vai dar um yield return wait for seconds 
         // e assim carregar a cada x trechos, mas vai ter outra var bool de reloading pra n rodar mais que um de
         //uma vez logo if(!reloading) reload() yield e por ai vai sequencial
+
+            checkHealth();
+
             if(mgController.inPause()==false){
                 StartCoroutine("rechargeShots");
         
@@ -150,8 +158,11 @@ public class Player_Projeto : MonoBehaviour
 
                 if(Input.GetButtonDown("Fire1") && detectedObject!=null){ // when not in combat too
                     detectedObject.SendMessage("use");
-                } else if(Input.GetButtonDown("Fire1") && detectedObject==null ){
-                    StartCoroutine("shot");
+                } else if(Input.GetButtonDown("Fire1") && detectedObject==null){
+                    anim.SetTrigger("Shot");//reset bar and recharbe bar
+                    tired=true;
+
+                    //StartCoroutine(rechargeEnergy()); for magic spells, shooting envolves charges and etc, so it has some differente recharge mechanic
                 }
 
                 if(attacking && grounded){
@@ -192,34 +203,46 @@ public class Player_Projeto : MonoBehaviour
     }
     
 
-     public IEnumerator shot(){
-        if(!shooting){
-            shooting=true;
+     public void shot(){
+        if(actualCharges>0){
             actualCharges--;
             GameObject shot =    Instantiate(mgController.shots[dmgType],arrowPoint.position,arrowPoint.rotation);
             
-            if(lookLeft){
+            if(lookLeft){//fixDirection()
                 shot.GetComponent<SpriteRenderer>().flipX=true;
             }else{
                 shot.GetComponent<SpriteRenderer>().flipX=false;
             }
 
-
+            shot.GetComponent<Rigidbody2D>().AddForce(new Vector2(shot.GetComponent<Arrow>().getArrowForce()*dir.x,0));
+            
+            //in recharge
+            /*
             shot.GetComponent<Rigidbody2D>().AddForce(new Vector2(shot.GetComponent<Arrow>().getArrowForce()*dir.x,0));// should be a method in Arrow Script
 
             yield return new WaitForSeconds(1f);
             shooting=false;
+            */
+
         }
     }
 
-    private IEnumerator rechargeShots(){
+    private IEnumerator rechargeShots(){//gun/bow selected, something with need reload when bullets or any are empty
         if(!reloading && actualCharges<charges){
             reloading=true;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(2f);
             actualCharges++;
             reloading=false;
         }
     }
+
+    /*private IEnumerator rechargeEnergy(){//magic selected
+        if(tired){
+            yield return new WaitForSeconds(2.0f);
+        }
+
+        tired = false;
+    }*/
 
     // Collisoes
      //Podemos utilizar o funcionamento por tags, layer ou ate other.gameObject.name que
@@ -241,11 +264,14 @@ public class Player_Projeto : MonoBehaviour
         }else if(other.gameObject.tag=="DamageKnock"){
             takeDamage(5f);
             rig.AddForce(new Vector2(0,250));
+            
+            triggerHit();
         }
         else if(other.gameObject.tag=="enemy"){
             if(!stunned){
                 StartCoroutine(applyKnockBack(0.2f,20f,(transform.position.x-objColPos.x)/(transform.position.x-objColPos.x)));
                 takeDamage(5f);
+                triggerHit();
             }
         }
         else if (other.gameObject.tag == "Finish")
@@ -279,6 +305,10 @@ public class Player_Projeto : MonoBehaviour
         
     }
 
+    public void triggerShot(){
+        shot();
+    }
+
     //Todo Seria utilizado para reproduzir um som quando chamada tal funcao
     
     void takeDamage(float damage){
@@ -293,17 +323,7 @@ public class Player_Projeto : MonoBehaviour
             }
     }
 
-    public float getHealthPercent(){
-
-        return actualHealth/health;
-        
-    }
-
-    public string getHealthRelation(){
-
-        return actualHealth+"/"+health;
-
-    }
+    
 
     public IEnumerator applyKnockBack(float knockDur,float knockPwr, float direction){
         
@@ -322,6 +342,30 @@ public class Player_Projeto : MonoBehaviour
 
 
         
+
+    }
+
+    void checkHealth(){
+        if(actualHealth<=0){
+            mgController.gameOver();
+        }
+    }
+
+    public void triggerHit(){
+        anim.SetTrigger("Hit");
+
+        mgController.hitTriggerUI();
+    }
+
+    public float getHealthPercent(){
+
+        return actualHealth/health;
+        
+    }
+
+    public string getHealthRelation(){
+
+        return actualHealth+"/"+health;
 
     }
 

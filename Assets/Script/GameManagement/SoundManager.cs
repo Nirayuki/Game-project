@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour {
     public   AudioClip sound ;
-    public  AudioSource audioSource; 
+    public  AudioSource audioSource;
+
+    [SerializeField]
+    public Dictionary<string,AudioSource> orgAudios; 
 
     //Jogador
     public  AudioClip jumpPlayer;

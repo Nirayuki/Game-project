@@ -30,5 +30,7 @@ public class Arrow : MonoBehaviour
         return dmgType;
     }
 
-    
+    public void autoDestroy(){
+        Destroy(gameObject);
+    }
 }
