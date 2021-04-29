@@ -61,10 +61,14 @@ public class Player_Projeto : MonoBehaviour
 
     [Header("Itens e Armas")]
     [SerializeField]
-    private int charges=0;
+    public float charges=3;
 
     [SerializeField]
-    private int actualCharges;
+    public float actualCharges;
+
+    public float mana=100;
+
+    public float actualMana=100;
 
     private bool reloading=false;
 
@@ -109,7 +113,7 @@ public class Player_Projeto : MonoBehaviour
         if(horizontal>0 && lookLeft == true && !attacking){ // Dadas as variaveis anteriores ela valida para qual lado estamos olhando, por exemplo a horizntal
             flip(); 
                                                        //Armazena entre > < ou igual a 0 (sendo que 0 esta parado e -1 ou 1 depende para o lado que esta olhando tendo em vista)
-        }else if(horizontal<0 && lookLeft==false && !attacking){//horizontal>1 igual a direita
+        }else if(horizontal<0 && lookLeft==false && !attacking ){//horizontal>1 igual a direita
             flip();
         } 
 
@@ -158,7 +162,7 @@ public class Player_Projeto : MonoBehaviour
 
                 if(Input.GetButtonDown("Fire1") && detectedObject!=null){ // when not in combat too
                     detectedObject.SendMessage("use");
-                } else if(Input.GetButtonDown("Fire1") && detectedObject==null){
+                } else if(Input.GetButtonDown("Fire1") && detectedObject==null && actualCharges>0){
                     anim.SetTrigger("Shot");//reset bar and recharbe bar
                     tired=true;
 

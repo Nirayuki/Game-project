@@ -51,6 +51,12 @@ MonoBehaviour:
   jumpSlime: {fileID: 8300000, guid: f7ee0a0619b2cce45b738bf3402d5719, type: 3}
   BMusic: {fileID: 0}
   doorOpening: {fileID: 8300000, guid: f5075b6580f847c438a9afb9aef4a11f, type: 3}
+  clips:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!82 &6320315689949741487
 AudioSource:
   m_ObjectHideFlags: 0
@@ -63,7 +69,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.467
+  m_Volume: 0.209
   m_Pitch: 1
   Loop: 0
   Mute: 0
