@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 485840519}
   m_Layer: 0
   m_Name: FireShot
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,7 +125,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrowForce: 100
+  dir: 0
   dmgType: 0
+  damage: 0
 --- !u!50 &8070490562319050064
 Rigidbody2D:
   serializedVersion: 4

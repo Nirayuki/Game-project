@@ -11,6 +11,9 @@ TagManager:
   - arrow
   - interactive
   - ScenarioObject
+  - EnemyWeapon
+  - EnemyProjectile
+  - Projectile
   layers:
   - Default
   - TransparentFX

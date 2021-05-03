@@ -61,10 +61,14 @@ public class Player_Projeto : MonoBehaviour
 
     [Header("Itens e Armas")]
     [SerializeField]
-    private int charges=0;
+    public float charges=3;
 
     [SerializeField]
-    private int actualCharges;
+    public float actualCharges;
+
+    public float mana=100;
+
+    public float actualMana=100;
 
     private bool reloading=false;
 
@@ -101,17 +105,18 @@ public class Player_Projeto : MonoBehaviour
                                                                                 
         if(!stunned){
             rig.velocity = new Vector2(horizontal*speed,rig.velocity.y);
+            if(horizontal>0 && lookLeft == true && !attacking){ // Dadas as variaveis anteriores ela valida para qual lado estamos olhando, por exemplo a horizntal
+            flip(); 
+                                                       //Armazena entre > < ou igual a 0 (sendo que 0 esta parado e -1 ou 1 depende para o lado que esta olhando tendo em vista)
+            }else if(horizontal<0 && lookLeft==false && !attacking ){//horizontal>1 igual a direita
+            flip();
+            } 
         }
         else{
             rig.velocity = new Vector2(0f,0f);
         }
 
-        if(horizontal>0 && lookLeft == true && !attacking){ // Dadas as variaveis anteriores ela valida para qual lado estamos olhando, por exemplo a horizntal
-            flip(); 
-                                                       //Armazena entre > < ou igual a 0 (sendo que 0 esta parado e -1 ou 1 depende para o lado que esta olhando tendo em vista)
-        }else if(horizontal<0 && lookLeft==false && !attacking){//horizontal>1 igual a direita
-            flip();
-        } 
+        
 
         detectarObjeto();
     }
@@ -133,40 +138,41 @@ public class Player_Projeto : MonoBehaviour
 
                 
 
+                if(!stunned){
+                    if(vertical<0){//Ja esse, tendo em vista que vertical seria para cima, seria o responsavel por saber se solicitamos uma subida ou nao
+                        idAnimation=2; //Pois de acordo com os controles se apertamos ^ o vertical >1
+                        if(grounded){ //logo , para baixo seria vertical<1
+                            horizontal=0;
+                        }
+                        
+                    }
+                    else if(horizontal!=0 ){//Aqui, de acordo com nossas regras definimos a animcao utilizada, mudando a idanimation que, no animator funciona para trocas de animacao
+                        idAnimation=1;
+                        
+                    }else{
+                        idAnimation=0;
+                    }
 
-                if(vertical<0){//Ja esse, tendo em vista que vertical seria para cima, seria o responsavel por saber se solicitamos uma subida ou nao
-                    idAnimation=2; //Pois de acordo com os controles se apertamos ^ o vertical >1
-                    if(grounded){ //logo , para baixo seria vertical<1
+            
+                    //Comandos
+                    if(Input.GetButtonDown("Jump" ) && grounded ){
+                        rig.AddForce(new Vector2(0,jumpForce));//O primeiro seria o impulso para o x entao poderiamos criar um knock back ou front
+                        sManager.play("PJump");
+                        
+                    }
+
+                    if(Input.GetButtonDown("Fire1") && detectedObject!=null ){ // when not in combat too
+                        detectedObject.SendMessage("use");
+                    } else if(Input.GetButtonDown("Fire1") && detectedObject==null && actualCharges>0 ){
+                        anim.SetTrigger("Shot");//reset bar and recharbe bar
+                        tired=true;
+
+                        //StartCoroutine(rechargeEnergy()); for magic spells, shooting envolves charges and etc, so it has some differente recharge mechanic
+                    }
+
+                    if(attacking && grounded){
                         horizontal=0;
                     }
-                    
-                }
-                else if(horizontal!=0 ){//Aqui, de acordo com nossas regras definimos a animcao utilizada, mudando a idanimation que, no animator funciona para trocas de animacao
-                    idAnimation=1;
-                    
-                }else{
-                    idAnimation=0;
-                }
-
-        
-                //Comandos
-                if(Input.GetButtonDown("Jump" ) && grounded){
-                    rig.AddForce(new Vector2(0,jumpForce));//O primeiro seria o impulso para o x entao poderiamos criar um knock back ou front
-                    sManager.play("PJump");
-                    
-                }
-
-                if(Input.GetButtonDown("Fire1") && detectedObject!=null){ // when not in combat too
-                    detectedObject.SendMessage("use");
-                } else if(Input.GetButtonDown("Fire1") && detectedObject==null){
-                    anim.SetTrigger("Shot");//reset bar and recharbe bar
-                    tired=true;
-
-                    //StartCoroutine(rechargeEnergy()); for magic spells, shooting envolves charges and etc, so it has some differente recharge mechanic
-                }
-
-                if(attacking && grounded){
-                    horizontal=0;
                 }
             }
       
@@ -214,7 +220,7 @@ public class Player_Projeto : MonoBehaviour
                 shot.GetComponent<SpriteRenderer>().flipX=false;
             }
 
-            shot.GetComponent<Rigidbody2D>().AddForce(new Vector2(shot.GetComponent<Arrow>().getArrowForce()*dir.x,0));
+            shot.GetComponent<Rigidbody2D>().AddForce(new Vector2(shot.GetComponent<Projectile>().getArrowForce()*dir.x,0));
             
             //in recharge
             /*
@@ -264,14 +270,16 @@ public class Player_Projeto : MonoBehaviour
         }else if(other.gameObject.tag=="DamageKnock"){
             takeDamage(5f);
             rig.AddForce(new Vector2(0,250));
+            stun(0.3f);
             
-            triggerHit();
         }
         else if(other.gameObject.tag=="enemy"){
             if(!stunned){
-                StartCoroutine(applyKnockBack(0.2f,20f,(transform.position.x-objColPos.x)/(transform.position.x-objColPos.x)));
+
+                StartCoroutine(applyKnockBack(0.3f,20f,(transform.position.x-objColPos.x)/(transform.position.x-objColPos.x)));
+                StartCoroutine(stun(0.3f));
                 takeDamage(5f);
-                triggerHit();
+                
             }
         }
         else if (other.gameObject.tag == "Finish")
@@ -280,7 +288,7 @@ public class Player_Projeto : MonoBehaviour
         }
 
         else if(other.gameObject.tag == "changeGun"){
-            dmgType = other.gameObject.GetComponent<Arrow>().getArrowType();
+            dmgType = other.gameObject.GetComponent<Projectile>().getArrowType();
             Destroy(other.gameObject);
         }
     }
@@ -305,9 +313,7 @@ public class Player_Projeto : MonoBehaviour
         
     }
 
-    public void triggerShot(){
-        shot();
-    }
+    
 
     //Todo Seria utilizado para reproduzir um som quando chamada tal funcao
     
@@ -329,20 +335,22 @@ public class Player_Projeto : MonoBehaviour
         
         float timer = 0;
 
-        stunned=true;
+        
         
         while(timer<knockDur){
             timer+= Time.deltaTime;
             rig.AddForce(new Vector2(knockPwr*direction,knockPwr));
         }
-        //yield return new WaitForSeconds(0.5f);
-        
-        stunned=false;
         yield return 0;
+    }
 
 
-        
-
+    IEnumerator stun(float duration){
+        stunned=true;
+        setAnimation("stun",true);
+        yield return new WaitForSeconds(duration);
+        setAnimation("stun",false);
+        stunned=false;
     }
 
     void checkHealth(){
@@ -351,12 +359,18 @@ public class Player_Projeto : MonoBehaviour
         }
     }
 
-    public void triggerHit(){
-        anim.SetTrigger("Hit");
-
-        mgController.hitTriggerUI();
+    public void triggerShot(){
+        shot();
     }
 
+ 
+    
+    public void dealDamage(float damage){
+        takeDamage(damage);
+        
+    }
+
+   
     public float getHealthPercent(){
 
         return actualHealth/health;
@@ -367,6 +381,21 @@ public class Player_Projeto : MonoBehaviour
 
         return actualHealth+"/"+health;
 
+    }
+
+    void setAnimation(string name,bool condition){
+        switch(name){
+            case "stun":
+                if(condition){
+                    anim.SetBool("stunned",true);
+                    mgController.enableHitUI(true);
+                }else if(!condition){
+                    anim.SetBool("stunned",false);
+                    mgController.enableHitUI(false);
+                }
+                break;
+            
+        }
     }
 
 }
