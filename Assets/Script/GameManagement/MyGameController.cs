@@ -149,9 +149,9 @@ public class MyGameController : MonoBehaviour
 
 
 
-    public void hitTriggerUI(){
+    public void enableHitUI(bool boolean){
 
-            UICharacter.GetComponent<Animator>().SetTrigger("hit");
+            UICharacter.GetComponent<Animator>().SetBool("stunned",boolean);
 
     }
 

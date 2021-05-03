@@ -92,7 +92,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1468}
     - Class: 114
-      Script: {instanceID: 1646}
+      Script: {instanceID: 1470}
     - Class: 114
       Script: {instanceID: 1806}
     - Class: 114
@@ -118,7 +118,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 4290}
     - Class: 114
-      Script: {instanceID: 22634}
+      Script: {instanceID: 36158}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -191,7 +191,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1468}
     - Class: 114
-      Script: {instanceID: 1646}
+      Script: {instanceID: 1470}
     - Class: 114
       Script: {instanceID: 1806}
     - Class: 114
@@ -219,7 +219,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 4290}
     - Class: 114
-      Script: {instanceID: 16080}
+      Script: {instanceID: 15652}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -332,6 +332,12 @@ ScriptsOnlyBuild:
     className: GraphicRaycaster
   - hash:
       serializedVersion: 2
+      Hash: 21a9c6dbf300fc1f6dc15ca7e2c39a37
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Slider
+  - hash:
+      serializedVersion: 2
       Hash: 24c74cc0d527a06113f2b967042769f0
     assemblyName: UnityEngine.XR.LegacyInputHelpers.dll
     namespaceName: UnityEditor.XR.LegacyInputHelpers
@@ -390,12 +396,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Selectable
-  - hash:
-      serializedVersion: 2
-      Hash: 21a9c6dbf300fc1f6dc15ca7e2c39a37
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: Slider
   - hash:
       serializedVersion: 2
       Hash: 3164bc883ff663a5cdb32d1ef7e7c0c5
@@ -746,7 +746,7 @@ ScriptsOnlyBuild:
     className: AudioPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: 70fb575569a12a64f109f132412da1b5
+      Hash: fbc27fe197832d4bb7fb29773f5dee4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: bee_move

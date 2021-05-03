@@ -41,11 +41,12 @@
      <Compile Include="Assets\Script\GameManagement\Camera_scr.cs" />
      <Compile Include="Assets\Script\Scenario\ScreenCover.cs" />
      <Compile Include="Assets\Script\Objects\launcher.cs" />
-     <Compile Include="Assets\Script\Objects\Arrow.cs" />
+     <Compile Include="Assets\Script\Objects\Projectile.cs" />
      <Compile Include="Assets\Script\Objects\Door.cs" />
      <Compile Include="Assets\Script\Characters\basicEnemy.cs" />
      <Compile Include="Assets\Script\Characters\Player_Projeto.cs" />
      <Compile Include="Assets\Script\Menu\Menu.cs" />
+     <Compile Include="Assets\MeleeAttack.cs" />
      <Compile Include="Assets\Script\Characters\Slime_Move.cs" />
      <Compile Include="Assets\Script\Characters\bee_move.cs" />
      <Compile Include="Assets\Script\Menu\Parallax.cs" />
@@ -60,7 +61,7 @@
      <Compile Include="Assets\Script\Objects\Destructible_Scenario.cs" />
      <Compile Include="Assets\Script\GameManagement\GameOver.cs" />
      <Compile Include="Assets\Script\GameManagement\SoundManager.cs" />
-     <Compile Include="Assets\MeleeAttack.cs" />
+     <Compile Include="Assets\Script\Objects\Canon.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
