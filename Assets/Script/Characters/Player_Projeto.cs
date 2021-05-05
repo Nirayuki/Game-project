@@ -40,6 +40,7 @@ public class Player_Projeto : MonoBehaviour
     public float jumpForce; //armazena a forca aplicada no pulo do personagem
     public bool lookLeft=false; //Armazena o resultado da validacao para qual lado estamos olhando
     
+    public Vector3 velocity;
 
     [Header("Interacao com objetos")]
     //Interacao com objetos
@@ -101,6 +102,7 @@ public class Player_Projeto : MonoBehaviour
 
 
     void FixedUpdate(){ //taxa de atualizacao fixa 0.02, comandos relacionados a fisica
+        //velocity = rig.velocity;
         grounded = Physics2D.OverlapCircle(groundCheck.position,0.1448299f,whatIsGround); // Usado para validar com um true ou false se detecta uma colisao com o chao
                                                                                 
         if(!stunned){
@@ -113,7 +115,8 @@ public class Player_Projeto : MonoBehaviour
             } 
         }
         else{
-            rig.velocity = new Vector2(0f,0f);
+           // rig.velocity = new Vector2(0f,0f);
+           
         }
 
         
@@ -276,7 +279,7 @@ public class Player_Projeto : MonoBehaviour
         else if(other.gameObject.tag=="enemy"){
             if(!stunned){
 
-                StartCoroutine(applyKnockBack(0.3f,20f,(transform.position.x-objColPos.x)/(transform.position.x-objColPos.x)));
+                StartCoroutine(applyKnockBack(0.02f,150,transform.position));
                 StartCoroutine(stun(0.3f));
                 takeDamage(5f);
                 
@@ -331,15 +334,15 @@ public class Player_Projeto : MonoBehaviour
 
     
 
-    public IEnumerator applyKnockBack(float knockDur,float knockPwr, float direction){
+    public IEnumerator applyKnockBack(float knockDur,float knockPwr, Vector3 direction){
         
         float timer = 0;
-
+        rig.velocity = new Vector2(rig.velocity.x, 0);
         
         
-        while(timer<knockDur){
+        while(knockDur>timer){
             timer+= Time.deltaTime;
-            rig.AddForce(new Vector2(knockPwr*direction,knockPwr));
+            rig.AddForce(new Vector2((direction.x/direction.x)*-100,(direction.y/direction.y)*knockPwr));
         }
         yield return 0;
     }

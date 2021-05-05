@@ -213,8 +213,8 @@ MonoBehaviour:
   targets:
     serializedVersion: 2
     m_Bits: 64
-  right: {x: 1, y: 0, z: 0}
-  left: {x: -1, y: 0, z: 0}
+  right: {x: 1, y: 0}
+  left: {x: -1, y: 0}
   detector: {fileID: 642120117}
   detectedRight: {fileID: 0}
   detectedLeft: {fileID: 0}
@@ -467,11 +467,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4702472630124175299, guid: 7e378bba257c5474e82b266e45db3adf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.21
+      value: -2.198
       objectReference: {fileID: 0}
     - target: {fileID: 4702472630124175299, guid: 7e378bba257c5474e82b266e45db3adf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.017
+      value: -0.031
       objectReference: {fileID: 0}
     - target: {fileID: 4702472630124175299, guid: 7e378bba257c5474e82b266e45db3adf, type: 3}
       propertyPath: m_LocalPosition.z
@@ -516,6 +516,10 @@ PrefabInstance:
     - target: {fileID: 4702472630124175324, guid: 7e378bba257c5474e82b266e45db3adf, type: 3}
       propertyPath: m_Offset.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702472630124175325, guid: 7e378bba257c5474e82b266e45db3adf, type: 3}
+      propertyPath: m_Constraints
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4702472630861101423, guid: 7e378bba257c5474e82b266e45db3adf, type: 3}
       propertyPath: m_Layer
