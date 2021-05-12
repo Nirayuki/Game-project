@@ -108,14 +108,14 @@ public class Player_Projeto : MonoBehaviour
         if(!stunned){
             rig.velocity = new Vector2(horizontal*speed,rig.velocity.y);
             if(horizontal>0 && lookLeft == true && !attacking){ // Dadas as variaveis anteriores ela valida para qual lado estamos olhando, por exemplo a horizntal
-            flip(); 
+                flip(); 
                                                        //Armazena entre > < ou igual a 0 (sendo que 0 esta parado e -1 ou 1 depende para o lado que esta olhando tendo em vista)
             }else if(horizontal<0 && lookLeft==false && !attacking ){//horizontal>1 igual a direita
-            flip();
+                flip();
             } 
         }
         else{
-           // rig.velocity = new Vector2(0f,0f);
+            //rig.velocity = new Vector2(0f,0f);
            
         }
 
@@ -271,7 +271,7 @@ public class Player_Projeto : MonoBehaviour
             Destroy(other.gameObject,2);
             Debug.Log("Tum!");
         }else if(other.gameObject.tag=="DamageKnock"){
-            takeDamage(5f);
+            inflictDamage(5f);
             rig.AddForce(new Vector2(0,250));
             stun(0.3f);
             
@@ -281,7 +281,7 @@ public class Player_Projeto : MonoBehaviour
 
                 StartCoroutine(applyKnockBack(0.02f,150,transform.position));
                 StartCoroutine(stun(0.3f));
-                takeDamage(5f);
+                inflictDamage(5f);
                 
             }
         }
@@ -307,7 +307,7 @@ public class Player_Projeto : MonoBehaviour
             }
         } 
         else if(other.tag=="EnemyWeapon"){
-                takeDamage(10);
+                inflictDamage(10);
                 Destroy(other.gameObject);
         }
     }
@@ -320,7 +320,8 @@ public class Player_Projeto : MonoBehaviour
 
     //Todo Seria utilizado para reproduzir um som quando chamada tal funcao
     
-    void takeDamage(float damage){
+    public void inflictDamage(float damage){
+        damage = evictOverheal(damage);
         if (health>0){
                 actualHealth-=damage;
                 mgController.updateHealthUI();
@@ -366,13 +367,6 @@ public class Player_Projeto : MonoBehaviour
         shot();
     }
 
- 
-    
-    public void dealDamage(float damage){
-        takeDamage(damage);
-        
-    }
-
    
     public float getHealthPercent(){
 
@@ -384,6 +378,16 @@ public class Player_Projeto : MonoBehaviour
 
         return actualHealth+"/"+health;
 
+    }
+
+    float evictOverheal(float heal){
+        if(heal<0){
+            if((actualHealth-heal)>health){
+                return -(health-actualHealth);
+            }
+        }
+
+        return heal;
     }
 
     void setAnimation(string name,bool condition){

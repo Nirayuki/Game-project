@@ -51,6 +51,7 @@
      <Compile Include="Assets\Script\Characters\bee_move.cs" />
      <Compile Include="Assets\Script\Menu\Parallax.cs" />
      <Compile Include="Assets\Script\Characters\info_NPC.cs" />
+     <Compile Include="Assets\Script\Objects\Canon.cs" />
      <Compile Include="Assets\Script\GameManagement\MyGameController.cs" />
      <Compile Include="Assets\Script\Objects\Chest_scr.cs" />
      <Compile Include="Assets\Script\Scenario\Falling_Platform.cs" />
@@ -61,7 +62,7 @@
      <Compile Include="Assets\Script\Objects\Destructible_Scenario.cs" />
      <Compile Include="Assets\Script\GameManagement\GameOver.cs" />
      <Compile Include="Assets\Script\GameManagement\SoundManager.cs" />
-     <Compile Include="Assets\Script\Objects\Canon.cs" />
+     <Compile Include="Assets\Script\Objects\Collectible.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

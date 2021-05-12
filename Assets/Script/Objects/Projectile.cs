@@ -35,6 +35,9 @@ public class Projectile : MonoBehaviour
         if(other.gameObject.tag=="Enemy" && gameObject.tag=="Projectile"){
             
         }
+        if(other.gameObject.tag=="ground"){
+            Destroy(gameObject);
+        }
     }
 
     public float getArrowForce(){
