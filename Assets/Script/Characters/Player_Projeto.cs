@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class Player_Projeto : MonoBehaviour
 {
 
@@ -275,11 +276,12 @@ public class Player_Projeto : MonoBehaviour
             rig.AddForce(new Vector2(0,250));
             stun(0.3f);
             
+            
         }
         else if(other.gameObject.tag=="enemy"){
             if(!stunned){
 
-                StartCoroutine(applyKnockBack(0.02f,150,transform.position));
+                StartCoroutine(applyKnockBack(0.02f,150,(transform.position.x-objColPos.x)/Mathf.Abs((transform.position.x-objColPos.x))));
                 StartCoroutine(stun(0.3f));
                 inflictDamage(5f);
                 
@@ -335,7 +337,7 @@ public class Player_Projeto : MonoBehaviour
 
     
 
-    public IEnumerator applyKnockBack(float knockDur,float knockPwr, Vector3 direction){
+    public IEnumerator applyKnockBack(float knockDur,float knockPwr, float direction){
         
         float timer = 0;
         rig.velocity = new Vector2(rig.velocity.x, 0);
@@ -343,7 +345,7 @@ public class Player_Projeto : MonoBehaviour
         
         while(knockDur>timer){
             timer+= Time.deltaTime;
-            rig.AddForce(new Vector2((direction.x/direction.x)*-100,(direction.y/direction.y)*knockPwr));
+            rig.AddForce(new Vector2(direction*100,knockPwr));
         }
         yield return 0;
     }
